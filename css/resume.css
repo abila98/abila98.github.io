@@ -3,6 +3,16 @@
  * Copyright 2013-2017 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-resume/blob/master/LICENSE)
  */
+
+.counter-number {
+  text-align: center;
+  margin-top: auto; /* Pushes .counter-number to the bottom */
+  padding: 20px; /* Example padding */
+  background-color: #f0f0f0; /* Example background color */
+  }
+.counter-number p {
+  font-size: 1.2em; /* Example font size */
+  }
 body {
   font-family: 'Open Sans', serif;
   padding-top: 54px;
