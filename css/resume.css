@@ -5,14 +5,19 @@
  */
 
 .counter-number {
-  text-align: center;
-  margin-top: auto; /* Pushes .counter-number to the bottom */
-  padding: 20px; /* Example padding */
-  background-color: #f0f0f0; /* Example background color */
+  font-family: 'Open Sans', serif;
+  padding-top: 0;
+  padding-left: 17rem;
+  color: #BD5D38 !important;
   }
+
 .counter-number p {
-  font-size: 1.2em; /* Example font size */
+  font-family: 'Open Sans', serif;
+  padding-top: 0;
+  padding-left: 17rem;
+  color: #BD5D38 !important;
   }
+
 body {
   font-family: 'Open Sans', serif;
   padding-top: 54px;
