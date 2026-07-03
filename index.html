@@ -1,303 +1,602 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Abila Saravanabhavan — DevOps & Cloud Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Nunito:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #221F2B;
+  --surface: #2A2735;
+  --surface2: #322F3F;
+  --border: #423F52;
+  --accent: #A6C6A0;
+  --accent2: #B9D6EC;
+  --accent3: #F0B7CC;
+  --text: #EDE9F3;
+  --muted: #A79FBB;
+  --warm: #D6C8E8;
+  --warm-soft: rgba(214,200,232,0.12);
+  --warm-border: rgba(214,200,232,0.3);
+  --mono: 'Space Mono', monospace;
+  --sans: 'Nunito', sans-serif;
+  --serif: 'Fraunces', serif;
+  --hand: 'Caveat', cursive;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); overflow-x: hidden; }
+body::before { content: ''; position: fixed; inset: 0; background-image: radial-gradient(rgba(240,230,216,0.05) 1px, transparent 1px); background-size: 22px 22px; pointer-events: none; z-index: 0; }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 3rem; background: rgba(34,31,43,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.nav-logo { font-family: var(--hand); font-size: 22px; color: var(--accent3); letter-spacing: 0.02em; font-weight: 700; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; font-family: var(--mono); letter-spacing: 0.05em; transition: color 0.2s; }
+.nav-links a:hover { color: var(--accent3); }
+.hero { min-height: 100vh; display: flex; align-items: center; padding: 8rem 3rem 4rem; position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
+.hero-content { max-width: 700px; }
+.hero-tag { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+.hero-tag::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.hero h1 { font-family: var(--serif); font-size: clamp(3rem, 7vw, 6rem); font-weight: 600; font-style: italic; line-height: 1.02; letter-spacing: -0.01em; margin-bottom: 1.5rem; }
+.hero h1 span { color: var(--accent3); font-style: normal; }
+.hero-desc { font-size: 1.1rem; color: var(--muted); line-height: 1.7; margin-bottom: 2.5rem; max-width: 520px; font-weight: 400; }
+.hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn { font-family: var(--mono); font-size: 13px; padding: 12px 28px; border-radius: 24px; text-decoration: none; letter-spacing: 0.05em; transition: all 0.2s; }
+.btn-primary { background: var(--accent); color: #221F2B; font-weight: 700; }
+.btn-primary:hover { background: #8FBF85; transform: translateY(-2px); }
+.btn-secondary { border: 1px solid var(--border); color: var(--text); background: transparent; }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.hero-stats { display: flex; gap: 3rem; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+.stat-num { font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1; }
+.stat-label { font-size: 12px; color: var(--muted); font-family: var(--mono); margin-top: 4px; }
+.terminal-float { position: absolute; right: 3rem; top: 50%; transform: translateY(-50%); width: 380px; background: var(--surface); border: 1px solid var(--border); border-top: 2px dashed var(--accent3); border-radius: 12px; overflow: hidden; font-family: var(--mono); font-size: 12px; }
+.term-bar { background: var(--surface2); padding: 10px 14px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--border); }
+.term-dot { width: 10px; height: 10px; border-radius: 50%; }
+.term-body { padding: 1.25rem; line-height: 2; }
+.term-line { color: #A79FBB; }
+.term-line .p { color: var(--accent); }
+.term-line .cmd { color: var(--text); }
+.term-line .out { color: var(--accent2); }
+.term-line .ok { color: var(--accent); }
+.blink { animation: blink 1s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+section { max-width: 1200px; margin: 0 auto; padding: 6rem 3rem; position: relative; z-index: 1; }
+.section-tag { font-family: var(--mono); font-size: 11px; color: var(--accent3); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+.section-tag::before { content: '✦'; color: var(--muted); font-size: 9px; }
+.section-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; font-style: italic; letter-spacing: -0.01em; margin-bottom: 3rem; line-height: 1.08; }
+.exp-list { display: flex; flex-direction: column; gap: 0; }
+.exp-item { display: grid; grid-template-columns: 200px 1fr; gap: 3rem; padding: 2.5rem 0; border-bottom: 1px dashed var(--border); transition: all 0.3s; }
+.exp-item:hover { padding-left: 1rem; }
+.exp-period { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 0.5rem; }
+.exp-company { font-size: 13px; font-weight: 600; color: var(--accent2); }
+.exp-role { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; margin-bottom: 1rem; color: var(--text); }
+.exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.exp-bullets li { font-size: 14px; color: var(--muted); padding-left: 1.1rem; position: relative; line-height: 1.6; }
+.exp-bullets li::before { content: '✦'; position: absolute; left: 0; color: var(--accent3); font-size: 9px; top: 5px; }
+.exp-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+.exp-tag { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border: 1px solid var(--border); border-radius: 12px; color: var(--muted); letter-spacing: 0.05em; }
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; }
+.project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.3s; }
+.project-card:hover { border-color: var(--accent3); transform: translateY(-4px); }
+.project-arch-wrap { height: 200px; background: var(--surface2); position: relative; overflow: hidden; }
+.project-arch { width: 100%; height: 100%; }
+.project-body { padding: 1.5rem; }
+.project-num { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 0.5rem; }
+.project-title { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text); }
+.project-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
+.project-tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; background: rgba(168,192,138,0.1); border: 1px solid rgba(168,192,138,0.25); border-radius: 10px; color: var(--accent); }
+.project-links { display: flex; gap: 1rem; }
+.project-link { font-family: var(--mono); font-size: 11px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.project-link:hover { color: var(--accent3); }
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+.skill-group { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; }
+.skill-group-title { font-family: var(--mono); font-size: 11px; color: var(--accent3); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px dashed var(--border); }
+.skill-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.skill-pill { font-family: var(--mono); font-size: 11px; padding: 5px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; color: var(--text); transition: all 0.2s; }
+.skill-pill:hover { border-color: var(--accent3); color: var(--accent3); }
+.offduty-tag { font-family: var(--mono); font-size: 11px; color: var(--warm); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+.offduty-tag::before { content: '✦'; color: var(--muted); font-size: 9px; }
+.offduty-note { font-family: var(--hand); font-size: 1.8rem; color: var(--warm); line-height: 1.3; max-width: 640px; margin-bottom: 2.5rem; }
+.offduty-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem; align-items: start; }
+@media (max-width: 900px) { .offduty-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+.interests-copy { font-size: 15px; color: var(--muted); line-height: 1.85; margin-bottom: 1.75rem; }
+.interests-copy strong { color: var(--text); font-weight: 600; }
+.interest-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.interest-chip { font-family: var(--mono); font-size: 11px; padding: 6px 14px; background: var(--warm-soft); border: 1px solid var(--warm-border); border-radius: 20px; color: var(--warm); display: inline-flex; align-items: center; gap: 6px; }
+.lang-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.lang-item { display: grid; grid-template-columns: 100px 1fr; gap: 1.25rem; align-items: baseline; padding: 1rem 1.25rem; background: var(--surface); border: 1px solid var(--border); border-left: 2px solid var(--warm); border-radius: 8px; transition: border-color 0.2s, transform 0.2s; }
+.lang-item:hover { border-color: var(--warm); transform: translateX(4px); }
+.lang-name { font-family: var(--sans); font-weight: 700; font-size: 14px; color: var(--warm); }
+.lang-copy { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.contact-links { display: flex; flex-direction: column; gap: 1rem; }
+.contact-link { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text); font-family: var(--mono); font-size: 13px; transition: all 0.2s; }
+.contact-link:hover { border-color: var(--accent3); color: var(--accent3); }
+.contact-icon { font-size: 18px; width: 24px; text-align: center; }
+footer { border-top: 1px solid var(--border); padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; font-family: var(--mono); font-size: 11px; color: var(--muted); position: relative; z-index: 1; }
+.fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+@media (max-width: 900px) {
+  .terminal-float { display: none; }
+  .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+  .contact-wrap { grid-template-columns: 1fr; }
+  nav { padding: 1rem 1.5rem; }
+  section { padding: 4rem 1.5rem; }
+  .hero { padding: 7rem 1.5rem 3rem; }
+  .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">abila@devops:~$</div>
+  <ul class="nav-links">
+    <li><a href="#experience">experience</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#offduty">off-duty</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
 
-  <head>
+<div style="position:relative;overflow:hidden;">
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-tag">DevOps & Cloud Engineer</div>
+    <h1>Abila<br/><span>Saravanabhavan</span></h1>
+    <p class="hero-desc">5+ years building enterprise-scale cloud infrastructure, CI/CD automation, and container orchestration on AWS & Azure. exp-CKA certified. Based in Mumbai.</p>
+    <div class="hero-cta">
+      <a href="https://www.linkedin.com/in/abila-saravanabhavan/" target="_blank" class="btn btn-primary">LinkedIn ↗</a>
+      <a href="https://github.com/abila98/" target="_blank" class="btn btn-secondary">GitHub ↗</a>
+      <a href="mailto:abilanadar1998@gmail.com" class="btn btn-secondary">Email ↗</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num" data-target="5" data-suffix="+">0</div><div class="stat-label">years experience</div></div>
+      <div><div class="stat-num" data-target="250" data-suffix="+">0</div><div class="stat-label">pipelines built</div></div>
+      <div><div class="stat-num" data-target="18" data-suffix="+">0</div><div class="stat-label">AWS services used</div></div>
+      <div><div class="stat-num" data-target="3" data-suffix="">0</div><div class="stat-label">clouds (AWS/Azure/K8s)</div></div>
+    </div>
+  </div>
+  <div class="terminal-float">
+    <div class="term-bar">
+      <div class="term-dot" style="background:#ff5f57"></div>
+      <div class="term-dot" style="background:#ffbd2e"></div>
+      <div class="term-dot" style="background:#28c840"></div>
+      <span style="margin-left:8px;color:#A79FBB;font-size:11px">abila@aws-infra</span>
+    </div>
+    <div class="term-body">
+      <div class="term-line"><span class="p">$</span> <span class="cmd">aws ssm start-session --target i-0abc</span></div>
+      <div class="term-line"><span class="ok">Starting session... ✓</span></div>
+      <div class="term-line"><span class="p">$</span> <span class="cmd">kubectl get pods -n production</span></div>
+      <div class="term-line"><span class="ok">All pods running ✓</span></div>
+      <div class="term-line"><span class="p">$</span> <span class="cmd">terraform apply -auto-approve</span></div>
+      <div class="term-line"><span class="ok">Apply complete! 42 added ✓</span></div>
+      <div class="term-line"><span class="p">$</span> <span class="cmd">docker push ecr/chaichaatcharcha</span></div>
+      <div class="term-line"><span class="ok">Pushed successfully ✓</span></div>
+      <div class="term-line"><span class="p">$</span> <span class="cmd">jenkins pipeline --trigger</span></div>
+      <div class="term-line"><span class="ok">250 pipelines standardized ✓</span></div>
+      <div class="term-line"><span class="p">$</span> <span class="blink">▋</span></div>
+    </div>
+  </div>
+</section>
+</div>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Abila Saravanabhavan Portfolio Resume</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom fonts for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:100,200,300,400,500,600,700,800,900" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="vendor/devicons/css/devicons.min.css" rel="stylesheet">
-    <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="css/resume.min.css" rel="stylesheet">
-
-    <!-- Template Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet">
-
-
-  </head>
-
-  <body id="page-top">
-
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
-      <a class="navbar-brand js-scroll-trigger" href="#page-top">
-        <span class="d-block d-lg-none">Start Bootstrap</span>
-        <span class="d-none d-lg-block">
-          <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="img/profile.jpg" alt="">
-        </span>
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#experience">Experience</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#education">Education</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#tools">DevOps Tools</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#interests">Interests</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#languages">Languages</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#awards">Awards</a>
-          </li>
-        </ul>
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-tag">experience</div>
+  <h2 class="section-title">Where I've<br/>Worked</h2>
+  <div class="exp-list">
+    <div class="exp-item fade-up">
+      <div class="exp-meta">
+        <div class="exp-period">Jun 2024 – Sep 2025</div>
+        <div class="exp-company">ICICI Lombard</div>
       </div>
-    </nav>
-
-
-    <div class="container-fluid p-0">
-
-
-      <section class="resume-section p-3 p-lg-5 d-flex d-column" id="about">
-        <div class="my-auto">
-          <h1 class="mb-0">Abila
-            <span class="text-primary">Saravanabhavan</span>
-          </h1>
-          <div class="subheading mb-5">Navi Mumbai · Maharashtra ·
-            <a href="mailto:name@email.com">abilanadar1998@gmail.com</a>
-          </div>
-          <div class="counter-number">
-            <!-- Content updated dynamically by JavaScript -->
-          </div>
-    
-          <p class="mb-5">
-            As a DevOps professional with 4 years of experience, I specialize in automating software development and deployment workflows, along with expertise in cloud infrastructure management, CI/CD implementation, and containerization.</p>
-          
-            
-            I have some personal projects on github that I made for learning purposes <br><br>
-            <a href="https://github.com/abila98/AWSS3StaticWebsite" target="_blank">Static Website</a> - Setup using S3 and Terraform<br>
-            <a href="https://github.com/abila98/BucketListSetup" target="_blank">BucketList Website</a> -  Setup on AWS using ECR , EKS.<br>
-            <a href="https://github.com/abila98/PortfolioSetup" target="_blank">Porfolio</a> - Setup on AWS ASGs using Docker , Packer , Ansible, Terraform <br>
-            <a href="https://github.com/abila98/Hibernation_Lambda_Cloudwatch" target="_blank">Hibernation</a> - Setup on AWS Lambda , Cloudwatch, Terraform <br>
-            <a href="https://github.com/abila98/ToDo-List-App/" target="_blank">ToDo-List-App</a> - A sample nodejs app which can be used as base image.
-
-            
-            <br><br><br>
-          <ul class="list-inline list-social-icons mb-0">
-            <li class="list-inline-item">
-              <a href="https://www.linkedin.com/in/abila-saravanabhavan/" target="_blank">
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
-                </span>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://github.com/abila98/" target="_blank">
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                </span>
-              </a>
-            </li>
-
-            <li class="list-inline-item">
-              <a href="https://medium.com/@abilathegreat" target="_blank">
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-medium fa-stack-1x fa-inverse"></i>
-                </span>
-              </a>
-            </li>
-          </ul>
+      <div>
+        <div class="exp-role">Software Architect</div>
+        <ul class="exp-bullets">
+          <li>Standardized 250+ DevSecOps pipelines using modular Jenkins Shared Library — reduced maintenance overhead by 80%</li>
+          <li>Managed EKS workloads including HPA, resource quotas, and liveness/readiness probes for production reliability</li>
+          <li>Led EC2 → ECS migration using ECR, ALB, and Route53 — improving scalability and deployment automation</li>
+          <li>Automated report pipelines using Lambda + SQS, reducing manual effort significantly</li>
+          <li>Led Dynatrace observability across EC2, ECS, EKS with RUM and custom alerting dashboards</li>
+          <li>Leveraged Spot Instances as Jenkins agents — significant CI/CD compute cost reduction</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">EKS</span><span class="exp-tag">Jenkins</span><span class="exp-tag">ECS</span>
+          <span class="exp-tag">Lambda</span><span class="exp-tag">SQS</span><span class="exp-tag">Dynatrace</span>
+          <span class="exp-tag">Helm</span><span class="exp-tag">Checkmarx</span><span class="exp-tag">Cosign</span><span class="exp-tag">Spot</span>
         </div>
-      </section>
-
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="experience">
-        <div class="my-auto">
-          <h2 class="mb-5">Experience</h2>
-
-          <div class="resume-item d-flex flex-column flex-md-row mb-5">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0">Senior Developer - L1</h3>
-              <div class="subheading mb-3">Srijan- A Material+ Company</div>
-              <p>• Contributed in migration from Chef to Ansible, resulting in minimized deployment failures and smoother processes. 
-                <br>• Leveraged Ansible, shell scripts, and GitLab CI to automate deployments, significantly accelerating release cycles.<br>
-                • Implemented robust security measures with Wiz, ensuring timely mitigation of vulnerabilities and collaborating with the team to enhance
-                permissions and access rights.<br>
-                • Configured Dynatrace dashboards and established alerts for efficient performance monitoring, optimizing system performance.<br>
-                • Collaborated with developers to troubleshoot performance issues, providing timely support and solutions.<br>
-                • Managed recovery efforts post-accidental deletion of prod database. Coordinated team collaboration, achieving 0 data loss in database restoration.<br>
-                • Orchestrated large-scale software deployments, ensuring timely execution and seamless implementation.<br>
-                • Assisted in configuring Databricks setup, facilitating the establishment of jobs and clusters tailored to meet development requirements.<br>
-                • Contributed to the setup of Azure Functions, storage accounts, and associated alerts on the Azure dashboard, while actively engaging in
-                troubleshooting sessions with the Azure support team to resolve issues.</p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary">December 2021 - September 2023</span>
-            </div>
-          </div>
-
-          <div class="resume-item d-flex flex-column flex-md-row mb-5">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0">DevOps Engineer</h3>
-              <div class="subheading mb-3">NEC Software Solutions</div>
-              <p>• Automated infrastructure provisioning with Ansible Playbooks for various application components, ensuring consistency and reducing
-                manual effort.<br>
-                • Designed and implemented both freestyle and Pipeline CI/CD jobs in Jenkins, achieving faster deployments.<br>
-                • Dockerized developer workspace to promote consistency and environment portability, streamlining development workflow.<br>
-                • Automated application image creation for Azure environment using Packer and Ansible, simplifying infra setup.<br>
-                • Utilized Azure bacpac for efficient database migration between Azure environments, ensuring minimal downtime and data integrity.
-                </p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary">August 2019 - December 2021</span>
-            </div>
-          </div>
+      </div>
+    </div>
+    <div class="exp-item fade-up">
+      <div class="exp-meta">
+        <div class="exp-period">Dec 2021 – Sep 2023</div>
+        <div class="exp-company">Srijan — Material+</div>
+      </div>
+      <div>
+        <div class="exp-role">Senior Developer L1</div>
+        <ul class="exp-bullets">
+          <li>Led Chef → Ansible migration — significantly reduced deployment failures</li>
+          <li>Managed AWS infrastructure (VPC, NAT, EC2, S3, ALB, ASGs) using Terraform</li>
+          <li>Managed production database recovery with zero data loss within 6-hour SLA</li>
+          <li>Implemented security hardening with Wiz — improved IAM and access controls</li>
+          <li>Provisioned Azure Functions, Cosmos DB, Event Hubs using Terraform</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">Terraform</span><span class="exp-tag">Ansible</span><span class="exp-tag">AWS</span>
+          <span class="exp-tag">Azure</span><span class="exp-tag">Wiz</span><span class="exp-tag">Dynatrace</span><span class="exp-tag">GitLab CI</span>
         </div>
-
-      </section>
-
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="education">
-        <div class="my-auto">
-          <h2 class="mb-5">Education</h2>
-
-          <div class="resume-item d-flex flex-column flex-md-row mb-5">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0">Mumbai University</h3>
-              <div class="subheading mb-3">Bachelor of Engineering in Computer Engineering</div>
-              <div>S.I.E.S. Graduate School of Technology</div>
-              <p>CGPA: 8.33</p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary">2019</span>
-            </div>
-          </div>
-
-          <div class="resume-item d-flex flex-column flex-md-row">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0">Maharastra State Board</h3>
-              <div class="subheading mb-3">HSC in Science</div>
-              <div>S.I.E.S, Sion at Mumbai</div>
-              <p>Percentage: 83.69%</p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary">2015</span>
-            </div>
-          </div>
-
+      </div>
+    </div>
+    <div class="exp-item fade-up">
+      <div class="exp-meta">
+        <div class="exp-period">Aug 2019 – Dec 2021</div>
+        <div class="exp-company">NEC Software Solutions</div>
+      </div>
+      <div>
+        <div class="exp-role">DevOps Engineer</div>
+        <ul class="exp-bullets">
+          <li>Automated infrastructure provisioning using Ansible Playbooks across multiple components</li>
+          <li>Designed Jenkins CI/CD pipelines (freestyle and declarative) for build and deploy</li>
+          <li>Automated Azure AMI creation using Packer + Ansible — reduced provisioning time</li>
+          <li>Handled Azure database migrations using bacpac with minimal downtime</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">Jenkins</span><span class="exp-tag">Ansible</span><span class="exp-tag">Docker</span>
+          <span class="exp-tag">Packer</span><span class="exp-tag">Azure</span>
         </div>
-      </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="tools">
-        <div class="my-auto">
-          <h2 class="mb-5">DevOps Tools</h2>
-          <ul class="fa-ul mb-0">
-            <li>
-              <i class="fa-li fa fa-check"></i>
-              <b>Cloud :</b> AWS and Azure</li>
-            <li>
-              <i class="fa-li fa fa-check"></i>
-              <b>Version Control :</b> Git and Subversion</li>
-            <li>
-              <i class="fa-li fa fa-check"></i>
-              <b>CICD :</b> Jenkins , Github Actions , Gitlab CICD</li>
-            <li>
-              <i class="fa-li fa fa-check"></i>
-             <b>IaaC :</b> Terraform and Packer</li>
-             <li>
-              <i class="fa-li fa fa-check"></i>
-             <b>Configuration Management : </b> Ansible</li>
-             <li>
-              <i class="fa-li fa fa-check"></i>
-             <b>Containerization : </b>Docker and Kubernetes</li>
-             <li>
-              <i class="fa-li fa fa-check"></i>
-             <b>Monitoring : </b> Dynatrace and New Relic</li>
-             <li>
-              <i class="fa-li fa fa-check"></i>
-             <b>Security and Compliance : </b> Wiz</li>
-             <li>
-              <i class="fa-li fa fa-check"></i>
-             <b>Collaboration : </b> Slack , Confluence , Jira</li>
-          </ul>
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-tag">projects</div>
+  <h2 class="section-title">Things I've<br/>Built</h2>
+  <div class="projects-grid">
+
+    <div class="project-card fade-up">
+      <div class="project-arch-wrap">
+        <svg class="project-arch" viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="380" height="200" fill="#2A2735"/>
+          <defs><marker id="a1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#B9D6EC"/></marker></defs>
+          <text x="190" y="20" font-family="monospace" font-size="10" fill="#A6C6A0" text-anchor="middle">ChaiChaatCharcha Architecture</text>
+          <text x="190" y="34" font-family="monospace" font-size="8" fill="#A79FBB" text-anchor="middle">18+ AWS services · private subnet · VPC endpoints</text>
+          <rect x="8" y="55" width="330" height="130" rx="4" fill="none" stroke="#423F52" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="14" y="67" font-family="monospace" font-size="8" fill="#54506A">VPC</text>
+          <rect x="16" y="76" width="52" height="26" rx="3" fill="none" stroke="#A6C6A0" stroke-width="1"/>
+          <text x="42" y="93" font-family="monospace" font-size="8" fill="#A6C6A0" text-anchor="middle">Browser</text>
+          <line x1="68" y1="89" x2="88" y2="89" stroke="#B9D6EC" stroke-width="1" marker-end="url(#a1)"/>
+          <rect x="88" y="76" width="44" height="26" rx="3" fill="none" stroke="#B9D6EC" stroke-width="1"/>
+          <text x="110" y="93" font-family="monospace" font-size="8" fill="#B9D6EC" text-anchor="middle">ALB</text>
+          <line x1="132" y1="89" x2="152" y2="89" stroke="#B9D6EC" stroke-width="1" marker-end="url(#a1)"/>
+          <rect x="152" y="76" width="52" height="26" rx="3" fill="none" stroke="#A6C6A0" stroke-width="1"/>
+          <text x="178" y="87" font-family="monospace" font-size="8" fill="#A6C6A0" text-anchor="middle">EC2</text>
+          <text x="178" y="97" font-family="monospace" font-size="7" fill="#A79FBB" text-anchor="middle">Node.js</text>
+          <line x1="178" y1="102" x2="178" y2="122" stroke="#B9D6EC" stroke-width="1" marker-end="url(#a1)"/>
+          <rect x="152" y="122" width="52" height="26" rx="3" fill="none" stroke="#F0B7CC" stroke-width="1"/>
+          <text x="178" y="139" font-family="monospace" font-size="8" fill="#F0B7CC" text-anchor="middle">S3 images</text>
+          <line x1="204" y1="89" x2="224" y2="89" stroke="#B9D6EC" stroke-width="1" marker-end="url(#a1)"/>
+          <rect x="224" y="76" width="52" height="26" rx="3" fill="none" stroke="#E3B15E" stroke-width="1"/>
+          <text x="250" y="87" font-family="monospace" font-size="8" fill="#E3B15E" text-anchor="middle">DynamoDB</text>
+          <text x="250" y="97" font-family="monospace" font-size="7" fill="#A79FBB" text-anchor="middle">entries</text>
+          <rect x="224" y="122" width="52" height="26" rx="3" fill="none" stroke="#D6C8E8" stroke-width="1"/>
+          <text x="250" y="139" font-family="monospace" font-size="8" fill="#D6C8E8" text-anchor="middle">Cognito</text>
+          <rect x="290" y="76" width="40" height="26" rx="3" fill="none" stroke="#B9D6EC" stroke-width="0.5" stroke-dasharray="3,2"/>
+          <text x="310" y="87" font-family="monospace" font-size="7" fill="#B9D6EC" text-anchor="middle">VPC</text>
+          <text x="310" y="97" font-family="monospace" font-size="7" fill="#B9D6EC" text-anchor="middle">Endpoint</text>
+          <line x1="276" y1="89" x2="290" y2="89" stroke="#B9D6EC" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <text x="190" y="170" font-family="monospace" font-size="8" fill="#A79FBB" text-anchor="middle">Terraform · Docker · ECR · Session Manager</text>
+        </svg>
+      </div>
+      <div class="project-body">
+        <div class="project-num">01</div>
+        <div class="project-title">ChaiChaatCharcha AutoBlog</div>
+        <div class="project-desc">Personal food & coffee diary blog on AWS. Private EC2 behind ALB, S3 images, DynamoDB entries, Cognito auth, VPC endpoints — traffic stays private.</div>
+        <div class="project-tags">
+          <span class="project-tag">EC2</span><span class="project-tag">ALB</span><span class="project-tag">S3</span>
+          <span class="project-tag">DynamoDB</span><span class="project-tag">Cognito</span><span class="project-tag">VPC Endpoints</span>
+          <span class="project-tag">Terraform</span><span class="project-tag">Node.js</span><span class="project-tag">Docker</span>
         </div>
-      </section>
-
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="interests">
-        <div class="my-auto">
-          <h2 class="mb-5">Interests</h2>
-          <p>Apart from being a DevOps Engineer, I find fulfillment in a variety of hobbies. Crocheting and coloring provide me with a therapeutic escape, allowing me to unwind and express my creativity. Reading a book while immersing myself in music with a cup of coffee in cozy cafes brings me joy and soothes my soul, igniting my imagination and providing a much-needed recharge. Additionally, writing blog articles enables me to share my thoughts and experiences with others, sparking engaging discussions and connections. I like to call myself an introvert who also enjoys socializing, cherishing the moments of laughter and camaraderie with friends.</p>
-          <p class="mb-0">.</p>
+        <div class="project-links">
+          <a href="https://github.com/abila98/ChaiChaatCharcha-AutoBlog" target="_blank" class="project-link">⌥ GitHub ↗</a>
+          <a href="https://ccc.learnhowtocloud.is-great.org" target="_blank" class="project-link">⌘ Live ↗</a>
         </div>
-      </section>
-
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="languages">
-        <div class="my-auto">
-          <h2 class="mb-5">Languages</h2>
-          <ul class="fa-ul mb-0">
-            <li>
-              <i class="fa-li fa fa-check"></i>
-              <b>Tamil</b> is my Mother Tongue.</li>
-            <li>
-              <i class="fa-li fa fa-check"></i>
-              <b>English</b> because I went to an English medium school.</li>
-            <li>
-              <i class="fa-li fa fa-check"></i>
-              <b>Marathi</b> I was born and brought up in Mumbai.</li>
-            <li>
-              <i class="fa-li fa fa-check"></i>
-             <b>Hindi</b> is what I speak with friends</li>
-             <li>
-              <i class="fa-li fa fa-check"></i>
-             <b>Japanese</b>,well it is now 10+ years of me watching anime and J-drama , I now can speak a few sentences.</li>
-          </ul>
-
-        </div>
-      </section>
-
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="awards">
-        <div class="my-auto">
-          <h2 class="mb-5">Awards &amp; Certifications</h2>
-          <ul class="fa-ul mb-0">
-            <li>Certified Kubernetes Administrator (CKA) - March 2022
-              <a href="https://abilacertificate.s3.us-west-1.amazonaws.com/abila-saravanabhavan-cka-certificate.pdf" download="abila-saravanabhavan-cka-certificate.pdf" target="_blank">
-                <i class="fa-li fa fa-download text-warning"></i>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
+      </div>
     </div>
 
+    <div class="project-card fade-up">
+      <div class="project-arch-wrap">
+        <svg class="project-arch" viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="380" height="200" fill="#2A2735"/>
+          <defs><marker id="a2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#B9D6EC"/></marker></defs>
+          <text x="190" y="20" font-family="monospace" font-size="10" fill="#A6C6A0" text-anchor="middle">ExpenseTracker Architecture</text>
+          <text x="190" y="34" font-family="monospace" font-size="8" fill="#A79FBB" text-anchor="middle">EKS · Helm · GitHub Actions · Terraform</text>
+          <rect x="16" y="76" width="52" height="26" rx="3" fill="none" stroke="#A6C6A0" stroke-width="1"/>
+          <text x="42" y="93" font-family="monospace" font-size="8" fill="#A6C6A0" text-anchor="middle">GitHub</text>
+          <line x1="68" y1="89" x2="88" y2="89" stroke="#B9D6EC" stroke-width="1" marker-end="url(#a2)"/>
+          <rect x="88" y="76" width="56" height="26" rx="3" fill="none" stroke="#B9D6EC" stroke-width="1"/>
+          <text x="116" y="87" font-family="monospace" font-size="8" fill="#B9D6EC" text-anchor="middle">GH Actions</text>
+          <text x="116" y="97" font-family="monospace" font-size="7" fill="#A79FBB" text-anchor="middle">CI/CD</text>
+          <line x1="144" y1="89" x2="164" y2="89" stroke="#B9D6EC" stroke-width="1" marker-end="url(#a2)"/>
+          <rect x="164" y="76" width="44" height="26" rx="3" fill="none" stroke="#F0B7CC" stroke-width="1"/>
+          <text x="186" y="93" font-family="monospace" font-size="8" fill="#F0B7CC" text-anchor="middle">ECR</text>
+          <line x1="208" y1="89" x2="228" y2="89" stroke="#B9D6EC" stroke-width="1" marker-end="url(#a2)"/>
+          <rect x="228" y="66" width="56" height="46" rx="3" fill="none" stroke="#A6C6A0" stroke-width="1"/>
+          <text x="256" y="83" font-family="monospace" font-size="8" fill="#A6C6A0" text-anchor="middle">EKS</text>
+          <text x="256" y="95" font-family="monospace" font-size="7" fill="#A79FBB" text-anchor="middle">FastAPI</text>
+          <text x="256" y="106" font-family="monospace" font-size="7" fill="#A79FBB" text-anchor="middle">PostgreSQL</text>
+          <rect x="296" y="76" width="60" height="26" rx="3" fill="none" stroke="#D6C8E8" stroke-width="1"/>
+          <text x="326" y="87" font-family="monospace" font-size="8" fill="#D6C8E8" text-anchor="middle">Terraform</text>
+          <text x="326" y="97" font-family="monospace" font-size="7" fill="#A79FBB" text-anchor="middle">VPC+IAM</text>
+          <rect x="164" y="140" width="44" height="24" rx="3" fill="none" stroke="#E3B15E" stroke-width="1"/>
+          <text x="186" y="156" font-family="monospace" font-size="8" fill="#E3B15E" text-anchor="middle">Helm</text>
+          <line x1="186" y1="140" x2="186" y2="102" stroke="#E3B15E" stroke-width="0.5" stroke-dasharray="2,2" marker-end="url(#a2)"/>
+          <text x="190" y="185" font-family="monospace" font-size="8" fill="#A79FBB" text-anchor="middle">K8s manifests · multi-env · RBAC</text>
+        </svg>
+      </div>
+      <div class="project-body">
+        <div class="project-num">02</div>
+        <div class="project-title">ExpenseTracker</div>
+        <div class="project-desc">Full-stack app with FastAPI + PostgreSQL on EKS. Helm chart for multi-env deploys. Terraform provisions full AWS infra. GitHub Actions automates CI/CD end-to-end.</div>
+        <div class="project-tags">
+          <span class="project-tag">EKS</span><span class="project-tag">Helm</span><span class="project-tag">FastAPI</span>
+          <span class="project-tag">PostgreSQL</span><span class="project-tag">Terraform</span><span class="project-tag">GitHub Actions</span><span class="project-tag">ECR</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/abila98/ExpenseTracker" target="_blank" class="project-link">⌥ GitHub ↗</a>
+        </div>
+      </div>
+    </div>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <div class="project-card fade-up">
+      <div class="project-arch-wrap">
+        <svg class="project-arch" viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="380" height="200" fill="#2A2735"/>
+          <defs><marker id="a3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#B9D6EC"/></marker></defs>
+          <text x="190" y="20" font-family="monospace" font-size="10" fill="#A6C6A0" text-anchor="middle">PortfolioSetup Architecture</text>
+          <text x="190" y="34" font-family="monospace" font-size="8" fill="#A79FBB" text-anchor="middle">Packer + ASG + CloudWatch + SNS + Terraform</text>
+          <rect x="16" y="76" width="56" height="36" rx="3" fill="none" stroke="#F0B7CC" stroke-width="1"/>
+          <text x="44" y="90" font-family="monospace" font-size="8" fill="#F0B7CC" text-anchor="middle">Packer</text>
+          <text x="44" y="102" font-family="monospace" font-size="7" fill="#A79FBB" text-anchor="middle">+ Ansible</text>
+          <line x1="72" y1="94" x2="92" y2="94" stroke="#B9D6EC" stroke-width="1" marker-end="url(#a3)"/>
+          <rect x="92" y="80" width="44" height="26" rx="3" fill="none" stroke="#E3B15E" stroke-width="1"/>
+          <text x="114" y="97" font-family="monospace" font-size="8" fill="#E3B15E" text-anchor="middle">Custom AMI</text>
+          <line x1="136" y1="94" x2="156" y2="94" stroke="#B9D6EC" stroke-width="1" marker-end="url(#a3)"/>
+          <rect x="156" y="76" width="52" height="36" rx="3" fill="none" stroke="#A6C6A0" stroke-width="1"/>
+          <text x="182" y="90" font-family="monospace" font-size="8" fill="#A6C6A0" text-anchor="middle">ASG</text>
+          <text x="182" y="102" font-family="monospace" font-size="7" fill="#A79FBB" text-anchor="middle">multi-AZ</text>
+          <rect x="156" y="130" width="52" height="26" rx="3" fill="none" stroke="#B9D6EC" stroke-width="1"/>
+          <text x="182" y="147" font-family="monospace" font-size="8" fill="#B9D6EC" text-anchor="middle">ALB</text>
+          <line x1="182" y1="130" x2="182" y2="112" stroke="#B9D6EC" stroke-width="1" marker-end="url(#a3)"/>
+          <rect x="224" y="76" width="60" height="26" rx="3" fill="none" stroke="#D6C8E8" stroke-width="1"/>
+          <text x="254" y="93" font-family="monospace" font-size="8" fill="#D6C8E8" text-anchor="middle">CloudWatch</text>
+          <line x1="208" y1="89" x2="224" y2="89" stroke="#D6C8E8" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <rect x="224" y="118" width="60" height="26" rx="3" fill="none" stroke="#F0B7CC" stroke-width="1"/>
+          <text x="254" y="135" font-family="monospace" font-size="8" fill="#F0B7CC" text-anchor="middle">SNS alerts</text>
+          <line x1="254" y1="118" x2="254" y2="102" stroke="#F0B7CC" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <rect x="300" y="96" width="60" height="26" rx="3" fill="none" stroke="#E3B15E" stroke-width="0.5" stroke-dasharray="3,2"/>
+          <text x="330" y="107" font-family="monospace" font-size="7" fill="#E3B15E" text-anchor="middle">S3 tfstate</text>
+          <text x="330" y="117" font-family="monospace" font-size="7" fill="#A79FBB" text-anchor="middle">+ DDB lock</text>
+          <text x="190" y="175" font-family="monospace" font-size="8" fill="#A79FBB" text-anchor="middle">GitHub Actions · independent AMI / Terraform pipelines</text>
+        </svg>
+      </div>
+      <div class="project-body">
+        <div class="project-num">03</div>
+        <div class="project-title">PortfolioSetup</div>
+        <div class="project-desc">Packer + Ansible bake custom AMIs. Terraform provisions VPC, ALB, ASGs with CloudWatch alarms and SNS. S3 remote state with DynamoDB locking. GitHub Actions pipelines handle AMI and Terraform independently.</div>
+        <div class="project-tags">
+          <span class="project-tag">Packer</span><span class="project-tag">Ansible</span><span class="project-tag">ASG</span>
+          <span class="project-tag">CloudWatch</span><span class="project-tag">SNS</span><span class="project-tag">Terraform</span><span class="project-tag">GitHub Actions</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/abila98/PortfolioSetup" target="_blank" class="project-link">⌥ GitHub ↗</a>
+        </div>
+      </div>
+    </div>
 
-    <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <div class="project-card fade-up">
+      <div class="project-arch-wrap">
+        <svg class="project-arch" viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="380" height="200" fill="#2A2735"/>
+          <defs><marker id="a4" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#B9D6EC"/></marker></defs>
+          <text x="190" y="20" font-family="monospace" font-size="10" fill="#A6C6A0" text-anchor="middle">SendResume Architecture</text>
+          <text x="190" y="34" font-family="monospace" font-size="8" fill="#A79FBB" text-anchor="middle">Serverless · S3 · API Gateway · Lambda · SES</text>
+          <rect x="16" y="80" width="52" height="26" rx="3" fill="none" stroke="#F0B7CC" stroke-width="1"/>
+          <text x="42" y="91" font-family="monospace" font-size="8" fill="#F0B7CC" text-anchor="middle">S3 Static</text>
+          <text x="42" y="101" font-family="monospace" font-size="7" fill="#A79FBB" text-anchor="middle">website</text>
+          <line x1="68" y1="93" x2="88" y2="93" stroke="#B9D6EC" stroke-width="1" marker-end="url(#a4)"/>
+          <rect x="88" y="80" width="60" height="26" rx="3" fill="none" stroke="#B9D6EC" stroke-width="1"/>
+          <text x="118" y="91" font-family="monospace" font-size="8" fill="#B9D6EC" text-anchor="middle">API Gateway</text>
+          <text x="118" y="101" font-family="monospace" font-size="7" fill="#A79FBB" text-anchor="middle">REST</text>
+          <line x1="148" y1="93" x2="168" y2="93" stroke="#B9D6EC" stroke-width="1" marker-end="url(#a4)"/>
+          <rect x="168" y="80" width="52" height="26" rx="3" fill="none" stroke="#A6C6A0" stroke-width="1"/>
+          <text x="194" y="91" font-family="monospace" font-size="8" fill="#A6C6A0" text-anchor="middle">Lambda</text>
+          <text x="194" y="101" font-family="monospace" font-size="7" fill="#A79FBB" text-anchor="middle">Python</text>
+          <line x1="220" y1="93" x2="240" y2="93" stroke="#B9D6EC" stroke-width="1" marker-end="url(#a4)"/>
+          <rect x="240" y="80" width="44" height="26" rx="3" fill="none" stroke="#E3B15E" stroke-width="1"/>
+          <text x="262" y="91" font-family="monospace" font-size="8" fill="#E3B15E" text-anchor="middle">SES</text>
+          <text x="262" y="101" font-family="monospace" font-size="7" fill="#A79FBB" text-anchor="middle">email</text>
+          <line x1="284" y1="93" x2="304" y2="93" stroke="#B9D6EC" stroke-width="1" marker-end="url(#a4)"/>
+          <rect x="304" y="80" width="56" height="26" rx="3" fill="none" stroke="#A6C6A0" stroke-width="1"/>
+          <text x="332" y="97" font-family="monospace" font-size="8" fill="#A6C6A0" text-anchor="middle">📧 Recruiter</text>
+          <rect x="168" y="130" width="52" height="24" rx="3" fill="none" stroke="#F0B7CC" stroke-width="0.5" stroke-dasharray="3,2"/>
+          <text x="194" y="145" font-family="monospace" font-size="7" fill="#F0B7CC" text-anchor="middle">S3 resume.pdf</text>
+          <line x1="194" y1="130" x2="194" y2="106" stroke="#F0B7CC" stroke-width="0.5" stroke-dasharray="2,2" marker-end="url(#a4)"/>
+          <text x="190" y="175" font-family="monospace" font-size="8" fill="#A79FBB" text-anchor="middle">Zero server management · modular Terraform · CORS config</text>
+        </svg>
+      </div>
+      <div class="project-body">
+        <div class="project-num">04</div>
+        <div class="project-title">SendResume</div>
+        <div class="project-desc">Serverless resume-delivery platform. Static S3 site triggers Python Lambda via API Gateway to email resume PDF through SES. Zero server management, full Terraform IaC.</div>
+        <div class="project-tags">
+          <span class="project-tag">Lambda</span><span class="project-tag">API Gateway</span><span class="project-tag">S3</span>
+          <span class="project-tag">SES</span><span class="project-tag">Python</span><span class="project-tag">Terraform</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/abila98/SendResume" target="_blank" class="project-link">⌥ GitHub ↗</a>
+        </div>
+      </div>
+    </div>
 
-    <!-- Custom scripts for this template -->
-    <script src="js/resume.min.js"></script>
-    <script src="js/counter.js"></script>
+  </div>
+</section>
 
-  </body>
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-tag">skills</div>
+  <h2 class="section-title">Tools &<br/>Technologies</h2>
+  <div class="skills-grid">
+    <div class="skill-group fade-up">
+      <div class="skill-group-title">☁️ Cloud</div>
+      <div class="skill-pills">
+        <span class="skill-pill">EC2</span><span class="skill-pill">ECS</span><span class="skill-pill">EKS</span>
+        <span class="skill-pill">Lambda</span><span class="skill-pill">S3</span><span class="skill-pill">VPC</span>
+        <span class="skill-pill">ALB</span><span class="skill-pill">Route53</span><span class="skill-pill">SQS</span>
+        <span class="skill-pill">ECR</span><span class="skill-pill">Cognito</span><span class="skill-pill">DynamoDB</span>
+        <span class="skill-pill">Azure Functions</span><span class="skill-pill">Cosmos DB</span>
+      </div>
+    </div>
+    <div class="skill-group fade-up">
+      <div class="skill-group-title">🐳 Containers & Orchestration</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Docker</span><span class="skill-pill">Kubernetes</span><span class="skill-pill">EKS</span>
+        <span class="skill-pill">Helm</span><span class="skill-pill">ArgoCD</span><span class="skill-pill">ECS Fargate</span>
+      </div>
+    </div>
+    <div class="skill-group fade-up">
+      <div class="skill-group-title">🔧 CI/CD</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Jenkins</span><span class="skill-pill">Shared Libraries</span>
+        <span class="skill-pill">GitHub Actions</span><span class="skill-pill">GitLab CI</span>
+        <span class="skill-pill">CodePipeline</span>
+      </div>
+    </div>
+    <div class="skill-group fade-up">
+      <div class="skill-group-title">🏗️ IaC & Config</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Terraform</span><span class="skill-pill">Packer</span><span class="skill-pill">Ansible</span>
+      </div>
+    </div>
+    <div class="skill-group fade-up">
+      <div class="skill-group-title">🔐 Security</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Checkmarx</span><span class="skill-pill">Prisma Cloud</span>
+        <span class="skill-pill">SonarQube</span><span class="skill-pill">Cosign</span>
+        <span class="skill-pill">AnchoreSyft</span><span class="skill-pill">Wiz</span>
+        <span class="skill-pill">WAF</span><span class="skill-pill">GuardDuty</span>
+      </div>
+    </div>
+    <div class="skill-group fade-up">
+      <div class="skill-group-title">📊 Observability</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Dynatrace</span><span class="skill-pill">New Relic</span>
+        <span class="skill-pill">CloudWatch</span><span class="skill-pill">Prometheus</span>
+        <span class="skill-pill">Grafana</span>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- OFF DUTY -->
+<section id="offduty" style="position:relative;">
+  <div style="position:absolute; top:-4rem; left:-6rem; width:420px; height:420px; background:radial-gradient(circle, rgba(214,200,232,0.12), transparent 70%); pointer-events:none; z-index:-1;"></div>
+  <div class="offduty-tag">off the clock</div>
+  <h2 class="section-title">Beyond the<br/>Terminal</h2>
+  <p class="offduty-note">crochet hooks, colored pencils, a cup of coffee, and whatever's queued up next.</p>
+  <div class="offduty-grid">
+    <div class="offduty-interests fade-up">
+      <p class="interests-copy">Apart from being a DevOps Engineer, I find fulfillment in a variety of hobbies. Crocheting and coloring provide me with a therapeutic escape, allowing me to unwind and express my creativity. Reading a book while immersing myself in music with a cup of coffee in cozy cafes brings me joy and soothes my soul, igniting my imagination and providing a much-needed recharge. Additionally, writing blog articles enables me to share my thoughts and experiences with others, sparking engaging discussions and connections. I like to call myself an introvert who also enjoys socializing, cherishing the moments of laughter and camaraderie with friends.</p>
+      <div class="interest-chips">
+        <span class="interest-chip">🧶 crocheting</span>
+        <span class="interest-chip">🎨 coloring</span>
+        <span class="interest-chip">📖 reading</span>
+        <span class="interest-chip">☕ cozy cafés</span>
+        <span class="interest-chip">🎧 music</span>
+        <span class="interest-chip">✍️ blogging</span>
+        <span class="interest-chip">😄 friends</span>
+      </div>
+    </div>
+    <div class="offduty-languages fade-up">
+      <div class="lang-list">
+        <div class="lang-item">
+          <div class="lang-name">Tamil</div>
+          <div class="lang-copy">My mother tongue.</div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-name">English</div>
+          <div class="lang-copy">Because I went to an English medium school.</div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-name">Marathi</div>
+          <div class="lang-copy">Born and brought up in Mumbai.</div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-name">Hindi</div>
+          <div class="lang-copy">What I speak with friends.</div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-name">Japanese</div>
+          <div class="lang-copy">10+ years of watching anime and J-drama — I can now speak a few sentences.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrap">
+    <div class="contact-text fade-up">
+      <div class="section-tag">contact</div>
+      <h2 class="section-title">Let's<br/>Connect</h2>
+      <p style="color:var(--muted);line-height:1.7;font-size:15px;">Open to Senior DevOps / Cloud Engineer roles. Based in Mumbai, open to remote. Let's talk infrastructure, pipelines, and everything cloud.</p>
+    </div>
+    <div class="contact-links fade-up">
+      <a href="mailto:abilanadar1998@gmail.com" class="contact-link"><span class="contact-icon">✉</span>abilanadar1998@gmail.com</a>
+      <a href="https://www.linkedin.com/in/abila-saravanabhavan/" target="_blank" class="contact-link"><span class="contact-icon">in</span>linkedin.com/in/abila-saravanabhavan</a>
+      <a href="https://github.com/abila98/" target="_blank" class="contact-link"><span class="contact-icon">⌥</span>github.com/abila98</a>
+      <a href="https://medium.com/@abilathegreat" target="_blank" class="contact-link"><span class="contact-icon">✍</span>medium.com/@abilathegreat</a>
+      <a href="https://abilacertificate.s3.us-west-1.amazonaws.com/abila-saravanabhavan-cka-certificate.pdf" target="_blank" class="contact-link"><span class="contact-icon">🏅</span>exp-CKA Certificate ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>abila saravanabhavan © 2026</span>
+  <span style="color:var(--accent)">built with ☕ and AWS</span>
+</footer>
+
+<script>
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{ if(e.isIntersecting) setTimeout(()=>e.target.classList.add('visible'),i*100); });
+},{threshold:0.1});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+
+function animCount(el,target,suffix){
+  let c=0; const step=target/50;
+  const t=setInterval(()=>{
+    c+=step; if(c>=target){c=target;clearInterval(t);}
+    el.textContent=Math.floor(c)+suffix;
+  },25);
+}
+const statsObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.stat-num').forEach(n=>{
+        animCount(n,+n.dataset.target,n.dataset.suffix||'');
+      });
+      statsObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.5});
+const st=document.querySelector('.hero-stats');
+if(st) statsObs.observe(st);
+</script>
+</body>
 </html>
 
